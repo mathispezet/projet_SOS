@@ -94,7 +94,7 @@ def main(argv: list[str] | None = None) -> dict:
             x0 = x0.to(device)
             with torch.no_grad():
                 rank = per_sample_mse(x0, target).argsort(descending=True)
-            x0, idx = x0[rank], idx[rank]
+            x0, idx = x0[rank], idx[rank.cpu()]  # pool indices live on the CPU
             x0[:1] = seed_dev  # the worst sample restarts from the seed
             if args.regime == "regenerate" and args.damage_n > 0:
                 masks = make_circle_masks(args.damage_n, h, w, device=device)
