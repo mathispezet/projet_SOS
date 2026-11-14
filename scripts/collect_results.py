@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 KEEP = ["config.json", "summary.json", "loss.png", "growth_strip.png"]
-KEEP_EVAL = ["metrics.json", "growth_curve.png", "growth_strip.png",
+KEEP_EVAL = ["metrics.json", "curves.npz", "growth_curve.png", "growth_strip.png",
              "damage_circle_curve.png", "damage_circle_strip.png",
              "damage_half_curve.png", "damage_half_strip.png",
              "damage_dropout_curve.png", "damage_dropout_strip.png"]

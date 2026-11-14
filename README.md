@@ -32,6 +32,8 @@ Train, then evaluate:
 ```bash
 python -m nca.train --target lizard --regime grow --steps 8000 --out runs/lizard_grow
 python -m nca.evaluate --run runs/lizard_grow --damage all --trials 20
+python scripts/collect_results.py runs/lizard_grow          # copy metrics and figures into results/
+python scripts/compare_runs.py results/lizard_grow results/lizard_regen --out results/comparison
 ```
 
 Targets are Noto emoji downloaded on first use (`lizard`, `mushroom`, `smiley`, `butterfly`,
@@ -49,7 +51,9 @@ Evaluation (`nca.evaluate`): MSE to the target at every step of a growth from th
 (long-horizon stability at steps 500 and 1000), and three damage types applied at step 100
 (circular erasure, half cut, random cell dropout) with the **recovery rate** (share of runs
 back under an MSE threshold within 200 steps) and the **recovery time**, over 3 training
-seeds x 20 damage trials per condition.
+seeds x 20 damage trials per condition. Each evaluation also keeps the raw per-trial curves
+(`eval/curves.npz`) so that `scripts/compare_runs.py` can overlay several runs and tabulate
+them. Results are in `results/` and discussed in `RESULTS.md`.
 
 ## Repository layout
 
@@ -60,8 +64,10 @@ nca/pool.py       sample pool for persistence training
 nca/train.py      training loop (regimes, gradient normalisation, logging, figures)
 nca/evaluate.py   growth curves, damage protocol, recovery metrics, strips
 nca/utils.py      damage masks, plotting, seeding
+scripts/          collect_results.py (copy a run into results/), compare_runs.py (tables + overlaid curves)
 tests/            unit tests (unittest)
 runs/             training outputs (ignored by git)
+results/          versioned metrics and figures per run, cross-run comparisons
 ```
 
 ## References

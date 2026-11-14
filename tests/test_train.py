@@ -1,9 +1,13 @@
 """End-to-end smoke test: a tiny regenerate-regime training and its evaluation on the CPU."""
 import pathlib
+import subprocess
+import sys
 import tempfile
 import unittest
 
 from nca import evaluate, train
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
 class TestTrainEvaluateSmoke(unittest.TestCase):
@@ -27,6 +31,15 @@ class TestTrainEvaluateSmoke(unittest.TestCase):
             for kind in ("circle", "half", "dropout"):
                 self.assertIn("recovery_rate", metrics[f"damage_{kind}"])
             self.assertTrue((out / "eval" / "metrics.json").exists())
+            self.assertTrue((out / "eval" / "curves.npz").exists())
+
+            cmp_out = pathlib.Path(tmp) / "cmp"
+            proc = subprocess.run([sys.executable, str(ROOT / "scripts" / "compare_runs.py"), str(out),
+                                   "--out", str(cmp_out)], cwd=ROOT, capture_output=True, text=True)
+            self.assertEqual(proc.returncode, 0, proc.stderr)
+            self.assertTrue((cmp_out / "comparison.md").exists())
+            self.assertTrue((cmp_out / "growth_curves.png").exists())
+            self.assertTrue((cmp_out / "damage_circle_curves.png").exists())
 
 
 if __name__ == "__main__":
