@@ -175,7 +175,7 @@ def main(argv=None) -> None:
     if proto:
         md += [proto, ""]
     md += [*damage_table(runs, labels), "", "## Figures", "", *[f"- `{f}`" for f in figures]]
-    (out / "comparison.md").write_text("\n".join(md) + "\n", encoding="utf-8")
+    (out / "comparison.md").write_text("\n".join(md) + "\n", encoding="utf-8", newline="\n")
     sys.stdout.reconfigure(encoding="utf-8")
     print("\n".join(md))
     print(f"\nwrote {out}")

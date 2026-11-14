@@ -132,7 +132,7 @@ def plot_curves(
 
 
 def write_json(path: str | Path, obj: dict) -> None:
-    Path(path).write_text(json.dumps(obj, indent=2), encoding="utf-8")
+    Path(path).write_text(json.dumps(obj, indent=2) + "\n", encoding="utf-8", newline="\n")
 
 
 def read_json(path: str | Path) -> dict:

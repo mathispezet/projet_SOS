@@ -50,8 +50,10 @@ Targets are Noto emoji downloaded on first use (`lizard`, `mushroom`, `smiley`, 
 Evaluation (`nca.evaluate`): MSE to the target at every step of a growth from the seed
 (long-horizon stability at steps 500 and 1000), and three damage types applied at step 100
 (circular erasure, half cut, random cell dropout) with the **recovery rate** (share of runs
-back under an MSE threshold within 200 steps) and the **recovery time**, over 3 training
-seeds x 20 damage trials per condition. Each evaluation also keeps the raw per-trial curves
+whose MSE, 200 steps after the damage, is back under 0.01 and within 2x of an undamaged
+growth at the same step), the **recovery time** and the **residual ratio** (MSE at the end of
+that window divided by the undamaged control), over 3 training seeds x 20 damage trials per
+condition. Each evaluation also keeps the raw per-trial curves
 (`eval/curves.npz`) so that `scripts/compare_runs.py` can overlay several runs and tabulate
 them. Results are in `results/` and discussed in `RESULTS.md`.
 
