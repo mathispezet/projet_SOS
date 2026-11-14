@@ -30,10 +30,10 @@ def read_json(path: Path) -> dict | None:
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
 
 
-def fmt(v, nd: int = 4) -> str:
+def fmt(v, spec: str = ".3g") -> str:
     if v is None or (isinstance(v, float) and math.isnan(v)):
         return "-"
-    return f"{v:.{nd}f}"
+    return format(v, spec)
 
 
 def default_label(config: dict) -> str:
@@ -69,8 +69,8 @@ def growth_table(runs: list[dict], labels: list[str]) -> list[str]:
              "|---|---|---|---|---|---|"]
     for r, lab in zip(runs, labels):
         s, m = r["summary"], r["metrics"]
-        lines.append(f"| {lab} | {fmt(s.get('mean_last_100'), 5)} | {fmt(m.get('mse_at_100'))} | "
-                     f"{fmt(m.get('mse_at_500'))} | {fmt(m.get('mse_at_1000'))} | {fmt(s.get('train_minutes'), 1)} |")
+        lines.append(f"| {lab} | {fmt(s.get('mean_last_100'))} | {fmt(m.get('mse_at_100'))} | "
+                     f"{fmt(m.get('mse_at_500'))} | {fmt(m.get('mse_at_1000'))} | {fmt(s.get('train_minutes'), '.1f')} |")
     return lines
 
 
@@ -83,8 +83,8 @@ def damage_table(runs: list[dict], labels: list[str]) -> list[str]:
             if d is None:
                 continue
             lines.append(f"| {lab} | {kind} | {fmt(d.get('post_damage_mse'))} | {fmt(d.get('final_mse'))} | "
-                         f"{fmt(d.get('undamaged_mse_at_end'))} | {fmt(d.get('residual_ratio'), 2)} | "
-                         f"{fmt(d.get('recovery_rate'), 2)} | {fmt(d.get('mean_recovery_time'), 0)} |")
+                         f"{fmt(d.get('undamaged_mse_at_end'))} | {fmt(d.get('residual_ratio'))} | "
+                         f"{fmt(d.get('recovery_rate'), '.2f')} | {fmt(d.get('mean_recovery_time'), '.0f')} |")
     return lines
 
 
