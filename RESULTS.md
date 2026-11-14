@@ -1,13 +1,15 @@
 # Results
 
-Lizard target, training seed 0, 20 evaluation trials per trained model. Ablation A (training
-regime) and ablation B (update probability) are complete; ablation C (perception) and the other
+Lizard target, training seed 0, 20 evaluation trials per trained model. Ablations A (training
+regime), B (update probability) and C (perception) are complete on one training seed; the other
 two training seeds are not run yet.
 
 **In one sentence:** the training regime decides both stability and repair. A rule trained only to
 grow loses the pattern after step 100; a rule trained with a sample pool keeps it indefinitely but
 repairs it unreliably; a rule that also saw damage during training keeps it and repairs it,
-including damage types it never saw.
+including damage types it never saw. Within the `regenerate` regime, the update probability
+matters more than the perception kernels: synchronous updates (p = 1.0) make half-cut repair
+unreliable, while fixed Sobel, Sobel + Laplacian and learned kernels all repair.
 
 ## Setup
 
@@ -140,6 +142,51 @@ directly comparable across rows.
   recovery on the three damage types. Asynchronous updates cost speed but buy robustness,
   which is the argument Mordvintsev et al. give for the stochastic update.
 
+## Ablation C: perception (RQ2)
+
+Same `regenerate` training (p = 0.5) with three perception stages: the fixed identity / Sobel-x /
+Sobel-y kernels (48 features per cell, 8320 parameters, the baseline above), the same plus a fixed
+3 x 3 Laplacian (64 features, 10368 parameters), and the three baseline kernels initialised as
+above but trained together with the rest of the rule (8752 parameters).
+
+| run | train loss (last 100 it.) | MSE t=100 | MSE t=500 | MSE t=1000 | training (min) |
+|---|---|---|---|---|---|
+| sobel | 0.000252 | 0.000229 | 5e-05 | 4.97e-05 | 15.7 |
+| sobel + laplacian | 0.000103 | 4.91e-05 | 1.46e-05 | 1.46e-05 | 15.3 |
+| learned | 0.000117 | 0.000103 | 3.33e-05 | 3.36e-05 | 15.4 |
+
+![growth curves, ablation C](results/ablation_C_perception/growth_curves.png)
+
+| run | damage | MSE after damage | MSE at end of window | undamaged control | residual ratio | recovery rate | mean recovery time (steps) |
+|---|---|---|---|---|---|---|---|
+| sobel | circle | 0.00884 | 0.000451 | 5.24e-05 | 8.6 | 0.90 | 41 |
+| sobel | half | 0.0153 | 0.000342 | 5.24e-05 | 6.52 | 0.85 | 68 |
+| sobel | dropout | 0.0074 | 0.000186 | 5.24e-05 | 3.55 | 1.00 | 26 |
+| sobel + laplacian | circle | 0.0086 | 0.000186 | 1.47e-05 | 12.6 | 0.95 | 32 |
+| sobel + laplacian | half | 0.015 | 0.000737 | 1.47e-05 | 50.1 | 0.80 | 49 |
+| sobel + laplacian | dropout | 0.00682 | 1.55e-05 | 1.47e-05 | 1.05 | 1.00 | 14 |
+| learned | circle | 0.00871 | 0.000188 | 3.38e-05 | 5.55 | 0.95 | 36 |
+| learned | half | 0.0151 | 0.000463 | 3.38e-05 | 13.7 | 0.95 | 70 |
+| learned | dropout | 0.0069 | 0.000176 | 3.38e-05 | 5.21 | 0.95 | 18 |
+
+![half-cut damage curves, ablation C](results/ablation_C_perception/damage_half_curves.png)
+
+![disc strips, ablation C](results/ablation_C_perception/damage_circle_strips.png)
+
+- All three perceptions give stable rules (1.5e-5 to 5e-5 at step 1000) that repair the three
+  damage types in 80 to 100 % of the trials. With 20 trials one trial is 5 %, so the rate
+  differences between perceptions are within the resolution of this single-seed experiment:
+  the perception matters less than the training regime (ablation A) or the update probability
+  (ablation B).
+- The Laplacian channel gives the best fit (training loss 1.0e-4, MSE 5e-5 at step 100 against
+  2.3e-4 for the baseline) and the fastest repairs (32, 49 and 14 steps; the dropout is repaired
+  back to the quality of the intact control, residual ratio 1.05). Its half-cut rate (0.80) is
+  the lowest of the three but one trial away from the baseline, and its mean half-cut curve
+  rises again after step 220: the few trials that regrew the wrong shape keep drifting.
+- Learning the kernels instead of fixing them changes little (training loss 1.2e-4, recovery
+  0.95 on each damage type, similar recovery times): the fixed Sobel filters are already an
+  adequate perception for this task, which supports the choice made by Mordvintsev et al.
+
 ## Caveats
 
 - One training seed per condition so far; the 20 trials share the same model, so the spread they
@@ -152,12 +199,11 @@ directly comparable across rows.
 
 ## Next steps
 
-Two more training seeds per condition; ablation C (Sobel + Laplacian, learned 3 x 3 kernels) on
-the `regenerate` regime; a second target.
+Two more training seeds per condition, to put a spread on the recovery rates; a second target.
 
 ## Files
 
 - `results/<run>/`: `config.json`, `summary.json`, `loss.png`, `growth_strip.png` and `eval/`
   (`metrics.json`, `curves.npz`, one curve and one strip per damage type).
-- `results/ablation_A_regime/`, `results/ablation_B_fire_rate/`: `comparison.md` (the tables above)
-  and the overlaid figures of each ablation.
+- `results/ablation_A_regime/`, `results/ablation_B_fire_rate/`, `results/ablation_C_perception/`:
+  `comparison.md` (the tables above) and the overlaid figures of each ablation.
