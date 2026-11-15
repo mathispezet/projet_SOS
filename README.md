@@ -66,7 +66,7 @@ that window divided by the undamaged control), over 3 training seeds x 20 damage
 condition. Each evaluation also keeps the raw per-trial curves
 (`eval/curves.npz`) so that `scripts/compare_runs.py` can overlay several runs and tabulate
 them. Results are in `results/` and discussed in `RESULTS.md`; the written report is
-`report/SOS_report_NCA_self_repair.pdf`.
+`report/SOS_report_NCA_self_repair.pdf` and the final presentation `report/SOS_final_presentation_NCA.pptx`.
 
 ## Repository layout
 
@@ -82,7 +82,7 @@ scripts/          run_ablations.py (train + evaluate + collect every condition a
 tests/            unit tests (unittest)
 runs/             training outputs (ignored by git)
 results/          versioned metrics and figures per run, cross-run comparisons
-report/           the written project report (PDF)
+report/           the written project report (PDF) and the final presentation (PPTX)
 ```
 
 ## References
