@@ -1,6 +1,8 @@
 """Copy the figures and metrics of one or more runs into the versioned ``results/`` folder.
 
-``runs/`` is ignored by git (checkpoints, logs); ``results/`` keeps what the report needs.
+``runs/`` is ignored by git (logs, intermediate checkpoints); ``results/`` keeps what the report
+needs plus the final weights (``model.pt``, about 40 KB), so every published model can be
+re-evaluated with ``python -m nca.evaluate --run results/<run> --out <dir>``.
 
 usage: python scripts/collect_results.py runs/lizard_grow_s0 [runs/other_run ...]
 """
@@ -9,7 +11,7 @@ import shutil
 import sys
 from pathlib import Path
 
-KEEP = ["config.json", "summary.json", "loss.png", "growth_strip.png"]
+KEEP = ["config.json", "summary.json", "model.pt", "loss.png", "growth_strip.png"]
 KEEP_EVAL = ["metrics.json", "curves.npz", "growth_curve.png", "growth_strip.png",
              "damage_circle_curve.png", "damage_circle_strip.png",
              "damage_half_curve.png", "damage_half_strip.png",

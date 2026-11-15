@@ -32,8 +32,15 @@ Train, then evaluate:
 ```bash
 python -m nca.train --target lizard --regime grow --steps 8000 --out runs/lizard_grow
 python -m nca.evaluate --run runs/lizard_grow --damage all --trials 20
-python scripts/collect_results.py runs/lizard_grow          # copy metrics and figures into results/
+python scripts/collect_results.py runs/lizard_grow          # copy metrics, figures and weights into results/
 python scripts/compare_runs.py results/lizard_grow results/lizard_regen --out results/comparison
+```
+
+The final weights of every run are versioned (`results/<run>/model.pt`, about 40 KB each), so any
+published model can be re-evaluated without retraining:
+
+```bash
+python -m nca.evaluate --run results/lizard_regen_s0 --out demo --trials 5
 ```
 
 The whole experiment (7 conditions x 3 seeds, about 16 min of GPU per run) is one command, which
@@ -81,7 +88,7 @@ scripts/          run_ablations.py (train + evaluate + collect every condition a
                   collect_results.py (copy a run into results/), compare_runs.py (tables + overlaid curves)
 tests/            unit tests (unittest)
 runs/             training outputs (ignored by git)
-results/          versioned metrics and figures per run, cross-run comparisons
+results/          versioned metrics, figures and trained weights per run, cross-run comparisons
 report/           the written project report (PDF) and the final presentation (PPTX)
 ```
 
