@@ -1,0 +1,37 @@
+{
+  "target": "lizard",
+  "target_size": 40,
+  "pad": 16,
+  "cache_dir": "assets/targets",
+  "regime": "regenerate",
+  "steps": 8000,
+  "batch_size": 8,
+  "pool_size": 1024,
+  "damage_n": 3,
+  "min_steps": 64,
+  "max_steps": 96,
+  "channel_n": 16,
+  "hidden_n": 128,
+  "fire_rate": 0.5,
+  "perception": "learned",
+  "lr": 0.002,
+  "lr_decay_step": 2000,
+  "seed": 1,
+  "device": "cuda",
+  "grad_checkpoint": false,
+  "out": "runs/lizard_regen_learned_s1",
+  "log_every": 50,
+  "ckpt_every": 500,
+  "grid": [
+    72,
+    72
+  ],
+  "model": {
+    "channel_n": 16,
+    "hidden_n": 128,
+    "fire_rate": 0.5,
+    "perception": "learned",
+    "alive_threshold": 0.1,
+    "parameters": 8752
+  }
+}

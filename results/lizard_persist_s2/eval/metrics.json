@@ -1,0 +1,51 @@
+{
+  "run": "runs/lizard_persist_s2",
+  "regime": "persist",
+  "target": "lizard",
+  "trials": 20,
+  "damage_at": 100,
+  "steps_after": 200,
+  "threshold": 0.01,
+  "rel_factor": 2.0,
+  "floor": 0.001,
+  "mse_at_50": 0.0027006478048861027,
+  "mse_at_100": 0.00010270113125443459,
+  "mse_at_200": 1.6348438293789513e-05,
+  "mse_at_500": 1.124041955335997e-05,
+  "mse_at_1000": 1.1457851542218123e-05,
+  "mse_min": 1.123637684941059e-05,
+  "mse_min_step": 489,
+  "damage_circle": {
+    "pre_damage_mse": 8.91618401510641e-05,
+    "post_damage_mse": 0.008743192069232464,
+    "final_mse": 0.010380063205957413,
+    "undamaged_mse_at_end": 1.1869159607158508e-05,
+    "residual_ratio": 874.5407046086907,
+    "target_at_end": 0.0010000000474974513,
+    "recovery_rate": 0.4,
+    "mean_recovery_time": 36.5,
+    "trials": 20
+  },
+  "damage_half": {
+    "pre_damage_mse": 0.00010359047155361623,
+    "post_damage_mse": 0.01513198483735323,
+    "final_mse": 0.012434260919690132,
+    "undamaged_mse_at_end": 1.1869159607158508e-05,
+    "residual_ratio": 1047.6108950620903,
+    "target_at_end": 0.0010000000474974513,
+    "recovery_rate": 0.0,
+    "mean_recovery_time": null,
+    "trials": 20
+  },
+  "damage_dropout": {
+    "pre_damage_mse": 0.000118834781460464,
+    "post_damage_mse": 0.007445458322763443,
+    "final_mse": 0.008540943264961243,
+    "undamaged_mse_at_end": 1.1869159607158508e-05,
+    "residual_ratio": 719.5912387773473,
+    "target_at_end": 0.0010000000474974513,
+    "recovery_rate": 0.0,
+    "mean_recovery_time": null,
+    "trials": 20
+  }
+}

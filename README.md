@@ -42,7 +42,7 @@ the seeds of each condition come from `compare_runs.py --by-condition`:
 
 ```bash
 python scripts/run_ablations.py --seeds 0 1 2
-python scripts/compare_runs.py "results/lizard_grow_s*" "results/lizard_persist_s*" "results/lizard_regen_s*" \
+python scripts/compare_runs.py "results/lizard_grow_s*" "results/lizard_persist_s*" "results/lizard_regen_s[0-9]" \
     --out results/ablation_A_seeds --by-condition --bands
 ```
 

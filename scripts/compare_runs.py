@@ -3,7 +3,7 @@
 usage:
   python scripts/compare_runs.py results/lizard_grow_s0 results/lizard_persist_s0 results/lizard_regen_s0 \
       --out results/ablation_A_regime [--labels grow persist regenerate] [--bands]
-  python scripts/compare_runs.py "results/lizard_grow_s*" "results/lizard_persist_s*" "results/lizard_regen_s*" \
+  python scripts/compare_runs.py "results/lizard_grow_s*" "results/lizard_persist_s*" "results/lizard_regen_s[0-9]" \
       --out results/ablation_A_seeds --by-condition --bands
 
 Reads <run>/config.json, <run>/summary.json, <run>/eval/metrics.json and, when present,
