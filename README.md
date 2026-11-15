@@ -65,7 +65,8 @@ growth at the same step), the **recovery time** and the **residual ratio** (MSE 
 that window divided by the undamaged control), over 3 training seeds x 20 damage trials per
 condition. Each evaluation also keeps the raw per-trial curves
 (`eval/curves.npz`) so that `scripts/compare_runs.py` can overlay several runs and tabulate
-them. Results are in `results/` and discussed in `RESULTS.md`.
+them. Results are in `results/` and discussed in `RESULTS.md`; the written report is
+`report/SOS_report_NCA_self_repair.pdf`.
 
 ## Repository layout
 
@@ -81,6 +82,7 @@ scripts/          run_ablations.py (train + evaluate + collect every condition a
 tests/            unit tests (unittest)
 runs/             training outputs (ignored by git)
 results/          versioned metrics and figures per run, cross-run comparisons
+report/           the written project report (PDF)
 ```
 
 ## References
