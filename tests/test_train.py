@@ -41,6 +41,18 @@ class TestTrainEvaluateSmoke(unittest.TestCase):
             self.assertTrue((cmp_out / "growth_curves.png").exists())
             self.assertTrue((cmp_out / "damage_circle_curves.png").exists())
 
+            # the same run twice = one condition with two "seeds": exercises the pooled tables and bands
+            grp_out = pathlib.Path(tmp) / "grouped"
+            proc = subprocess.run([sys.executable, str(ROOT / "scripts" / "compare_runs.py"), str(out), str(out),
+                                   "--out", str(grp_out), "--by-condition", "--bands"],
+                                  cwd=ROOT, capture_output=True, text=True)
+            self.assertEqual(proc.returncode, 0, proc.stderr)
+            md = (grp_out / "comparison.md").read_text(encoding="utf-8")
+            self.assertIn("| condition | seeds |", md)
+            self.assertIn("| regenerate | 2 |", md)
+            self.assertTrue((grp_out / "damage_half_curves.png").exists())
+            self.assertTrue((grp_out / "damage_half_strips.png").exists())
+
 
 if __name__ == "__main__":
     unittest.main()

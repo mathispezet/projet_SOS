@@ -36,6 +36,16 @@ python scripts/collect_results.py runs/lizard_grow          # copy metrics and f
 python scripts/compare_runs.py results/lizard_grow results/lizard_regen --out results/comparison
 ```
 
+The whole experiment (7 conditions x 3 seeds, about 16 min of GPU per run) is one command, which
+skips the runs that already exist and can be resumed after an interruption; pooled tables over
+the seeds of each condition come from `compare_runs.py --by-condition`:
+
+```bash
+python scripts/run_ablations.py --seeds 0 1 2
+python scripts/compare_runs.py "results/lizard_grow_s*" "results/lizard_persist_s*" "results/lizard_regen_s*" \
+    --out results/ablation_A_seeds --by-condition --bands
+```
+
 Targets are Noto emoji downloaded on first use (`lizard`, `mushroom`, `smiley`, `butterfly`,
 `fish`, `star`), the offline synthetic `disc`, or any PNG path.
 
@@ -66,7 +76,8 @@ nca/pool.py       sample pool for persistence training
 nca/train.py      training loop (regimes, gradient normalisation, logging, figures)
 nca/evaluate.py   growth curves, damage protocol, recovery metrics, strips
 nca/utils.py      damage masks, plotting, seeding
-scripts/          collect_results.py (copy a run into results/), compare_runs.py (tables + overlaid curves)
+scripts/          run_ablations.py (train + evaluate + collect every condition and seed),
+                  collect_results.py (copy a run into results/), compare_runs.py (tables + overlaid curves)
 tests/            unit tests (unittest)
 runs/             training outputs (ignored by git)
 results/          versioned metrics and figures per run, cross-run comparisons
